@@ -57,11 +57,23 @@ function MatCalc.isSenderInTable(senderDisplayName)
 end
 
 function MatCalc.GetTTCPrices(itemLink)
-    --This could probably be moved into MatCalc.calculatePrice
     local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemLink)
-    local SuggestedPrice = priceInfo.SuggestedPrice
-    local Avg = priceInfo.Avg
-    return SuggestedPrice, Avg
+    --Check to make sure prices are valid first.
+    local foundPrices = true
+    if(priceInfo == nil) then
+        foundPrices = false
+    end
+    if(foundPrices) then
+        local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemLink)
+        local SuggestedPrice = priceInfo.SuggestedPrice
+        local Avg = priceInfo.Avg
+        return SuggestedPrice, Avg
+    else
+        --Only way the item will not have a SuggestedPrice is if it isnt a mat or something crazy
+        --Therefore have no value
+        d("No prices found for item!")
+        return 0, 0
+    end
 end
 
 function MatCalc.calculatePrice(itemLink)
