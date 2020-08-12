@@ -14,6 +14,10 @@ local numSenders = 0
 local CheckedMail = {}
 local numCheckedMail = 0
 
+local AddonEnabled = true
+local FirstDisplayCredits = false
+local PrintAfterEveryMail = true
+local PrintEachItem = true
 
 --Calculates what percentile price to use
 local SALE_PERCENTAGE = 0.50
@@ -24,12 +28,145 @@ MatCalc = {}
 --Easier way to RegisterForEvent
 MatCalc.name = "MatCalc"
 
+function MatCalc.ResetTables()
+    resetWarned = false
+    d("Reseting Tables!")
+    --Set tables back to default
+    senderNames = {}
+    senderValues = {}
+    numSenders = 0
+    CheckedMail = {}
+    numCheckedMail = 0
+    --And set them up in the way that doesnt break everything.
+    SenderNames[0] = "SenderNames"
+    SenderValues[0] = 0
+    CheckedMail[0] = 0
+end
+
+
+function MatCalc.EnableAddon()
+    if(AddonEnabled) then
+        d("Addon is already enabled")
+    else
+        d("Enabled MatCalc")
+        AddonEnabled = true
+    end
+end
+
+function MatCalc.DisableAddon()
+    if(AddonEnabled) then 
+        d("Disabled MatCalc")
+        AddonEnabled = false
+    else
+        d("Addon is already disabled")
+    end
+end
+
+function MatCalc.Toggle()
+    if(AddonEnabled) then
+        MatCalc.DisableAddon()
+    else
+        MatCalc.EnableAddon()
+    end
+end
+
+function MatCalc.DisplayHelp()
+    d("'/matcalc help' to display these messages")
+    d("'/matcalc on' to turn on the addon")
+    d("'/matcalc off' to turn off the addon")
+    d("'/matcalc toggle' to turn on the addon")
+    d("'/matcalc print' to print the list of senders and their values")
+    d("'/matcalc printtoggle' to toggle printing after every mail checked")
+    d("'/matcalc itemtoggle' to toggle printing data about each item")
+    d("'/matcalc credits' to display the credits")
+    d("'/matcalc reset' to reset addon")
+    d("Shortcuts include '/cmc', and '/mc'")
+end
+
+function MatCalc.PrintToggle()
+    if(PrintAfterEveryMail) then
+        PrintAfterEveryMail = false
+        d("Addon will not print after each mail now.")
+        d("Use '/matcalc print' to print the list, or toggle printing back on")
+    else
+        PrintAfterEveryMail = true
+        d("Addon will now print after each mail.")
+        d("Use '/matcalc printtoggle' to turn automatic printing off")
+    end
+end
+
+function MatCalc.ItemToggle()
+    if(PrintEachItem) then
+        PrintEachItem = false
+        d("Addon will not print info about each item now.")
+        d("Use '/matcalc itemtoggle' to show prices for each item")
+    else
+        PrintEachItem = true
+        d("Addon will now print info about each item.")
+        d("Use '/matcalc itemtoggle' to stop showing info")
+    end
+end
+
+function MatCalc.CommandHandler(extra)
+    if(FirstDisplayCredits == false) then
+        --On first comand run display addon loaded, and credits.
+        MatCalc.FirstDisplayCredits()
+    end
+    --conver string to lower
+    extra = string.lower(extra)
+
+    if(extra == "on") then
+        MatCalc.EnableAddon()
+    elseif(extra == "off") then
+        MatCalc.DisableAddon()
+    elseif(extra == "toggle") then
+        MatCalc.Toggle()
+    elseif(extra == "help") then
+        MatCalc.DisplayHelp()
+    elseif(extra == "credits") then
+        MatCalc.DisplayCredits()
+    elseif(extra == "print") then
+        MatCalc.PrintTable()
+    elseif(extra == "printtoggle") then
+        MatCalc.PrintToggle()
+    elseif(extra == "itemtoggle") then
+        MatCalc.ItemToggle()
+    elseif(extra == "reset") then
+        if(resetWarned) then
+            MatCalc.ResetTables()
+        else
+            resetWarned = true
+            d("Warning! this will delete all mails, senders, and their values!")
+            d("Do '/matcalc reset' again to confirm!")
+        end
+    elseif(extra == "hammer") then
+        d("U cant touch this!")
+    elseif(extra == "") then
+        MatCalc.DisplayHelp()
+    else
+        d("Command not recognized, do '/matcalc help' for list of commands")
+    end
+end
+
+SLASH_COMMANDS["/matcalc"] = MatCalc.CommandHandler
+SLASH_COMMANDS["/cmc"] = MatCalc.CommandHandler
+SLASH_COMMANDS["/mc"] = MatCalc.CommandHandler
+
+function MatCalc.PriceAddGold(price)
+    --vars to append the gold symbol to the price
+    local currencyType = CURT_MONEY
+    local formatType = ZO_CURRENCY_FORMAT_WHITE_AMOUNT_ICON
+    local currencyString = zo_strformat(SI_NUMBER_FORMAT, ZO_Currency_FormatKeyboard(currencyType, price, formatType))
+    return currencyString
+end
+
 function MatCalc.PrintTable()
     --Print loop through the tables and print them
     for i=0,numSenders do
         local goldValue = SenderValues[i]
         if(goldValue ~= 0) then
-            local text = SenderNames[i] .. ": " .. goldValue .. "g"
+            goldValue = MatCalc.PriceAddGold(goldValue)
+            local text = SenderNames[i] .. ": " .. goldValue
             d(text)
         end
     end
@@ -128,12 +265,14 @@ function MatCalc.checkMail(mailId, numAttachments, attachedMoney)
     local senderDisplayName = GetMailItemInfo(mailId)
     --Loop through all attachments
     for i=1,numAttachments do
-        local stackprice = 0
+        local stackPrice = 0
         local textureName, stack = GetAttachedItemInfo(mailId, i, LINK_STYLE_BRACKETS)
         local itemLink = GetAttachedItemLink(mailId, i)
-        --Create final text string and print
-        local text = stack .. "x " .. itemLink
-        d(text)
+        if(PrintEachItem) then
+            --Create final text string and print
+            local text = stack .. "x " .. itemLink
+            d(text)
+        end
         --Cut link string to be just the item Id
         local ItemId = MatCalc.LinkToId(itemLink)
         local itemPrice = MatCalc.calculatePrice(itemLink)
@@ -141,13 +280,20 @@ function MatCalc.checkMail(mailId, numAttachments, attachedMoney)
             --If item is not a mat it has no value
             itemPrice = 0
         end
-        d("itemPrice: " .. itemPrice)
-        stackprice = stack * itemPrice
-        d("stackprice: " .. stackprice)
-        totalMailValue = totalMailValue + stackprice
+        local newItemPrice = MatCalc.PriceAddGold(itemPrice)
+        stackPrice = stack * itemPrice
+        local newStackPrice = MatCalc.PriceAddGold(stackPrice)
+        totalMailValue = totalMailValue + stackPrice
+        if(PrintEachItem) then
+            d("itemPrice: " .. newItemPrice)
+            d("stackPrice: " .. newStackPrice)
+        end
     end
-    d("sender: " .. senderDisplayName)
-    d("totalMailValue: " .. totalMailValue)
+    local newTotalMailValue = MatCalc.PriceAddGold(totalMailValue)
+    if(PrintEachItem) then
+        d("sender: " .. senderDisplayName)
+        d("totalMailValue: " .. newTotalMailValue)
+    end
     return senderDisplayName, totalMailValue
 end
 
@@ -173,10 +319,7 @@ function MatCalc.buildTable(mailId, numAttachments, attachedMoney)
     end
 end
 
-function MatCalc.OnMailReadable(eventCode, mailId)
-    --d(SenderNames[numSenders])
-    --d(SenderValues[numSenders])
-    --d(CheckedMail[numSenders])
+function MatCalc.OnMailReadable(mailId)
     local hasCheckedMail = false
     for i=0,numCheckedMail do
         if(CheckedMail[i] == mailId) then
@@ -197,17 +340,31 @@ function MatCalc.OnMailReadable(eventCode, mailId)
             else
                 --Mail qualifies
                 MatCalc.buildTable(mailId, numAttachments, attachedMoney)
-                MatCalc.PrintTable()
+                if(PrintAfterEveryMail) then
+                    MatCalc.PrintTable()
+                end
             end
         end
     end
 end
 
-function MatCalc.DisplayCredits(eventCode)
-    d("MatCalc loaded")
+function MatCalc.CheckAddonEnabled(eventCode, mailId)
+    if(AddonEnabled) then
+        MatCalc.OnMailReadable(mailId)
+    end
+end
+
+function MatCalc.DisplayCredits()
     d("Addon written by Claymourn (@Claymourn)")
     d("Developed for MerchantHouse")
+end
+
+function MatCalc.FirstDisplayCredits(eventCode)
+    FirstDisplayCredits = true
+    d("MatCalc loaded")
+    d("Do '/matcalc help' for list of commands")
     EVENT_MANAGER:UnregisterForEvent(MatCalc.name, EVENT_MAIL_OPEN_MAILBOX)
+    MatCalc.DisplayCredits()
 end
 
 function MatCalc:Initialize()
@@ -218,9 +375,9 @@ function MatCalc:Initialize()
     --Creat the MatList to filter later
     CreateMatList:CreateMatList()
     --Clicking on mail triggers this, and the rest of the addon.
-    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_MAIL_READABLE, MatCalc.OnMailReadable)
+    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_MAIL_READABLE, MatCalc.CheckAddonEnabled)
     --DisplayCredits when they open their mailbox for the first time on load
-    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_MAIL_OPEN_MAILBOX, MatCalc.DisplayCredits)
+    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_MAIL_OPEN_MAILBOX, MatCalc.FirstDisplayCredits)
 end
 
 function MatCalc.OnAddOnLoaded(event, addonName)

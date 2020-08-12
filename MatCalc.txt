@@ -2,8 +2,8 @@
 ## APIVersion: 100031
 ## Description: Scans and calculates the value of mats in mails.
 ## Author: |cBB0000Claymourn|r
-## AddOnVersion: 3
-## Version: 1.1.1
+## AddOnVersion: 4
+## Version: 1.1.2
 
 MatCalc.lua
 CreateMatList.lua
@@ -16,4 +16,4 @@ CreateMatList.lua
 # The Elder Scrolls® and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in the United States
 # and/or other countries. All rights reserved.
 
-# Why are you reading this even?
+# If you're reading this feel free to send me gold or something lol

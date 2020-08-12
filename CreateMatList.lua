@@ -8,21 +8,25 @@ local WOODWORKING = 2
 local JEWELRY_CRAFTING = 3
 local ENCHANTING = 4
 local ALCHEMY = 5
---Provisioning goes here, if needed.
-local TRAIT_MATS = 6
-local STYLE_MATS = 7
-local FURNISHING_MATS = 8
+local PROVISIONING = 6
+local TRAIT_MATS = 7
+local STYLE_MATS = 8
+local FURNISHING_MATS = 9
 --Equipment Mat Type Constants
 local RAW_MAT = 0
 local REFINED_MAT = 1
 local IMPROVEMENT_MAT = 2
---Enchanting Mat Type Constants
+--ENCHANTING Mat Type Constants
 local POTENCY = 0
 local ESSENCE = 1
 local ASPECT = 2
---Alchemy Mat Type Constants
+--ALCHEMY Mat Type Constants
 local REAGENT = 0
 local SOLVENT = 1
+--PROVISIONING Mat Type Constants
+local FOOD_INGREDIENTS = 0
+local BEVERAGE_INGREDIENTS = 1
+local OTHER_INGREDIENTS = 2
 --Trait mat Type Constants
 local WEAPON = 0
 local ARMOR = 1
@@ -566,6 +570,125 @@ function CreateMatList.CreateMatList()
     MatList[ALCHEMY][SOLVENT][17] = "75365"
     --end of ALCHEMY/SOLVENT
     --end of ALCHEMY
+
+    --start of PROVISIONING
+    MatList[PROVISIONING] = {}
+    --start of PROVISIONING/FOOD_INGREDIENTS
+    MatList[PROVISIONING][FOOD_INGREDIENTS] = {}
+    --Fish
+    MatList[PROVISIONING][FOOD_INGREDIENTS][0] = "33753"
+    --Game
+    MatList[PROVISIONING][FOOD_INGREDIENTS][1] = "28609"
+    --Poultry
+    MatList[PROVISIONING][FOOD_INGREDIENTS][2] = "34321"
+    --Red Meat
+    MatList[PROVISIONING][FOOD_INGREDIENTS][3] = "33752"
+    --Small Game
+    MatList[PROVISIONING][FOOD_INGREDIENTS][4] = "33756"
+    --White Meat
+    MatList[PROVISIONING][FOOD_INGREDIENTS][5] = "33754"
+    --Apples
+    MatList[PROVISIONING][FOOD_INGREDIENTS][6] = "34311"
+    --Bananas
+    MatList[PROVISIONING][FOOD_INGREDIENTS][7] = "33755"
+    --Jazbay Grapes
+    MatList[PROVISIONING][FOOD_INGREDIENTS][8] = "28610"
+    --Melon
+    MatList[PROVISIONING][FOOD_INGREDIENTS][9] = "34308"
+    --Pumpkin
+    MatList[PROVISIONING][FOOD_INGREDIENTS][10] = "34305"
+    --Tomato
+    MatList[PROVISIONING][FOOD_INGREDIENTS][11] = "28603"
+    --Beets
+    MatList[PROVISIONING][FOOD_INGREDIENTS][12] = "34309"
+    --Carrots
+    MatList[PROVISIONING][FOOD_INGREDIENTS][13] = "34324"
+    --Corn
+    MatList[PROVISIONING][FOOD_INGREDIENTS][14] = "34323"
+    --Greens
+    MatList[PROVISIONING][FOOD_INGREDIENTS][15] = "28604"
+    --Potato
+    MatList[PROVISIONING][FOOD_INGREDIENTS][16] = "33758"
+    --Radish
+    MatList[PROVISIONING][FOOD_INGREDIENTS][17] = "34307"
+    --Cheese
+    MatList[PROVISIONING][FOOD_INGREDIENTS][18] = "27057"
+    --Flour
+    MatList[PROVISIONING][FOOD_INGREDIENTS][19] = "27100"
+    --Garlic
+    MatList[PROVISIONING][FOOD_INGREDIENTS][20] = "26954"
+    --Millet
+    MatList[PROVISIONING][FOOD_INGREDIENTS][21] = "27064"
+    --Saltrice
+    MatList[PROVISIONING][FOOD_INGREDIENTS][22] = "27063"
+    --Seasoning
+    MatList[PROVISIONING][FOOD_INGREDIENTS][23] = "27058"
+    --Frost Mirriam
+    MatList[PROVISIONING][FOOD_INGREDIENTS][24] = "26802"
+    --end of PROVISIONING/FOOD_INGREDIENTS
+    --start of PROVISIONING/BEVERAGE_INGREDIENTS
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS] = {}
+    --Barley
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][0] = "34329"
+    --Rice
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][1] = "29030"
+    --Rye
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][2] = "28639"
+    --Surilie Grapes
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][3] = "34345"
+    --Wheat
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][4] = "34348"
+    --Yeast
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][5] = "33774"
+    --Bittergreen
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][6] = "34334"
+    --Comberry
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][7] = "33768"
+    --Jasmine
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][8] = "33771"
+    --Lotus
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][9] = "34330"
+    --Mint
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][10] = "33773"
+    --Rose
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][11] = "28636"
+    --Acai Berry
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][12] = "34349"
+    --Coffee
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][13] = "33772"
+    --Ginkgo
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][14] = "34346"
+    --Ginseng
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][15] = "34347"
+    --Guarana
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][16] = "34333"
+    --Yerba Mate
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][17] = "34335"
+    --Ginger
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][18] = "27052"
+    --Honey
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][19] = "27043"
+    --Isinglass
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][20] = "27035"
+    --Lemon
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][21] = "27049"
+    --Metheglin
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][22] = "27048"
+    --Seaweed
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][23] = "28666"
+    --Bervez Juice
+    MatList[PROVISIONING][BEVERAGE_INGREDIENTS][24] = "27059"
+    --end of PROVISIONING/BEVERAGE_INGREDIENTS
+    --start of PROVISIONING/OTHER_INGREDIENTS
+    MatList[PROVISIONING][OTHER_INGREDIENTS] =  {}
+    --Perfect Roe
+    MatList[PROVISIONING][OTHER_INGREDIENTS][0] = "64222"
+    --Diminished Aetherial Dust
+    MatList[PROVISIONING][OTHER_INGREDIENTS][1] = "120078"
+    --Aetherial Dust
+    MatList[PROVISIONING][OTHER_INGREDIENTS][2] = "115026"
+    --end of PROVISIONING/OTHER_INGREDIENTS
+    --end of PROVISIONING
 
     --start of TRAIT_MATS
     MatList[TRAIT_MATS] = {}
