@@ -179,7 +179,7 @@ function MatCalc.getSenderIndex(senderDisplayName)
             return i
         end
     end
-    d("Something went horribly wrong in getSenderIndex")
+    d("If you can see this please tell @Claymourn")
     return 0
 end
 
@@ -250,6 +250,16 @@ function MatCalc.isItemMat(ItemId)
     return false
 end
 
+function IsSenderHireling(senderDisplayName)
+    --If there is an @ in the tag, its a player
+    local TagIndex = string.find(senderDisplayName, "@")
+    if(TagIndex == nil) then
+        return true
+    else
+        return false
+    end
+end
+
 function MatCalc.LinkToId(itemLink)
     --Changes link string to be just the number for the item.
     local IdStartIndex = string.find(itemLink, "item:", 0)
@@ -303,6 +313,13 @@ function MatCalc.buildTable(mailId, numAttachments, attachedMoney)
     --Add mailId to its table, and increment the max
     numCheckedMail = numCheckedMail + 1
     CheckedMail[numCheckedMail] = mailId
+    --Do not add hirelings to the table, that info is useless
+    --Maybe reenable this in the future in a setting if they want to compare how much they get from hirelings?
+    local IsHireling = false
+    IsHireling = IsSenderHireling(senderDisplayName)
+    if(IsHireling) then
+        return
+    end
     --Get if the sender has already mailed things in
     local test = false
     test = MatCalc.isSenderInTable(senderDisplayName)

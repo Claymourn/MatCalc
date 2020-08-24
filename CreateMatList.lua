@@ -845,7 +845,7 @@ function CreateMatList.CreateMatList()
     --Bronze
     MatList[STYLE_MATS][REFINED_MAT][16] = "46149"
     --Carmine Shieldsilk
-    MatList[STYLE_MATS][REFINED_MAT][17] = ""
+    MatList[STYLE_MATS][REFINED_MAT][17] = "156643"
     --Cassiterite
     MatList[STYLE_MATS][REFINED_MAT][18] = "69555"
     --Charcoal of Remorse
@@ -857,7 +857,7 @@ function CreateMatList.CreateMatList()
     --Crown Mimic Stone
     MatList[STYLE_MATS][REFINED_MAT][22] = "71668"
     --Consecrated Myrrh
-    MatList[STYLE_MATS][REFINED_MAT][23] = ""
+    MatList[STYLE_MATS][REFINED_MAT][23] = "158307"
     --Culanda Lacquer
     MatList[STYLE_MATS][REFINED_MAT][24] = "137953"
     --Daedra Heart
@@ -879,9 +879,9 @@ function CreateMatList.CreateMatList()
     --Eagle Feather
     MatList[STYLE_MATS][REFINED_MAT][33] = "71738"
     --Etched Adamantite
-    MatList[STYLE_MATS][REFINED_MAT][34] = ""
+    MatList[STYLE_MATS][REFINED_MAT][34] = "160609"
     --Etched Corundum
-    MatList[STYLE_MATS][REFINED_MAT][35] = ""
+    MatList[STYLE_MATS][REFINED_MAT][35] = "160592"
     --Etched Manganese
     MatList[STYLE_MATS][REFINED_MAT][36] = "160626"
     --Ferrous Salts
@@ -893,15 +893,15 @@ function CreateMatList.CreateMatList()
     --Frost Embers
     MatList[STYLE_MATS][REFINED_MAT][40] = "152235"
     --Fire Salts
-    MatList[STYLE_MATS][REFINED_MAT][41] = ""
+    MatList[STYLE_MATS][REFINED_MAT][41] = "156571"
     --Gloomspore Chitin
-    MatList[STYLE_MATS][REFINED_MAT][42] = ""
+    MatList[STYLE_MATS][REFINED_MAT][42] = "160509"
     --Goblin-Cloth Scrap
     MatList[STYLE_MATS][REFINED_MAT][43] = "151907"
     --Goldscale
     MatList[STYLE_MATS][REFINED_MAT][44] = "64687"
     --Grinstones
-    MatList[STYLE_MATS][REFINED_MAT][45] = ""
+    MatList[STYLE_MATS][REFINED_MAT][45] = "82002"
     --Gryphon Plume
     MatList[STYLE_MATS][REFINED_MAT][46] = "141740"
     --Hackwing Plumage
